@@ -1,4 +1,3 @@
-from turtle import title
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View 
 from .forms import PostCreateForm
@@ -6,10 +5,13 @@ from .models import Post
 # Create your views here.
 class BlogListView(View):
   def get(self, request, *args, **kwargs):
+      posts = Post.objects.all()
       context={
-          
+          'posts':posts
       }
       return render(request, 'blog_list.html', context)
+
+
 
 class BlogCreateView(View):
   def get(self, request, *args, **kwargs):
@@ -32,3 +34,11 @@ class BlogCreateView(View):
     context={
     }
     return render(request, 'blog_create.html', context)  
+  
+class BlogDetailView(View):
+   def get(self, pk, request, *args, **kwargs):
+       post = get_object_or_404(Post)
+       context={
+        'post':post
+       }
+       return render(request,'blog_detail.html', context)  
